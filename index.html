@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" ng-app="myApp">
+<head>
+	<meta charset="UTF-8">
+	<title>中软国际IT教育</title>
+	<!-- 视口设置 -->
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+	<!-- 禁止网页中的数字播出电话 -->
+	<meta name="format-detection" content="telephone=no">
+	<!-- 引入css文件 -->
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+	<!-- 引入轮播swiper插件css -->
+	<link rel="stylesheet" type="text/css" href="css/swiper.min.css">
+</head>
+<body>	
+	<!-- 导航菜单开始 -->
+	<nav id="nav" class="left-nav">
+		<h2>网站导航</h2>
+		<ul>
+			<li><a ui-sref="home">首页</a></li>
+			<li><a ui-sref="zyjj">卓越简介</a></li>
+			<li><a ui-sref="mqtj">名企推荐</a></li>
+			<li>院校合作</li>
+			<li>精彩活动</li>
+			<li>预约报名</li>
+			<li>就业流程</li>
+			<li>常见问题</li>
+		</ul>
+	</nav>
+	<!-- 导航菜单结束 -->
+
+	<!-- 主内容区开始 -->
+	<div id="main" class="bg">
+		<div ui-view>
+
+		</div>
+	</div>
+	<!-- 主内容区结束 -->
+
+	<!-- 底部导航开始 -->
+	<footer id="footer">
+		<a href="javascript:void(0);" id="navBtn">
+			<b>&#xe609</b>
+			<i>导航</i>
+		</a>
+		<a href="tel:041139737786">
+			<b>&#xe602</b>
+			<i>电话</i>
+		</a>
+		<a href="#">
+			<b>&#xe603</b>
+			<i>申请试听</i>
+		</a>
+	</footer>
+	<!-- 底部导航结束 -->
+
+	<script type="text/javascript" src="js/angular.js"></script>
+	<script type="text/javascript" src="js/angular-ui-router.js"></script>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/layer/layer.js"></script>
+	<script type="text/javascript" src="js/location.js"></script>
+	<script type="text/javascript" src="js/swiper.min.js"></script>
+	<script type="text/javascript">
+		// 获得dom对象
+		var navBtn = document.getElementById('navBtn');
+		var nav = document.getElementById('nav');
+		var main =  document.getElementById('main');
+		var footer =  document.getElementById('footer');
+
+		/*
+			切换导航菜单
+		*/
+		function toggleNav() {
+
+			if (main.className.indexOf('navon') == -1) {
+				main.className += ' navon';
+				footer.className = 'navon';
+				nav.style.visibility = 'visible';
+			} else {
+				main.className = main.className.replace(/ navon/g,'');
+				footer.className = '';
+				nav.style.visibility = 'hidden';
+			}
+
+		}
+
+		// 触摸导航按钮
+		navBtn.onclick = function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+
+			toggleNav();
+		}
+
+		// 触摸导航菜单
+		nav.onclick = function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+
+			toggleNav();
+		}
+
+//		创建模块，依赖路由模块
+		var myApp = angular.module('myApp',['ui.router']);
+
+		//在config中配置路由，注入$stateProvider,$urlRouterProvider两个服务
+		myApp.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
+
+//			配置路由对应的页面url地址
+			$stateProvider
+				.state('home',{
+					url:'/home', //默认页
+					templateUrl:'tpls/home.html',
+					controller:'homeController'
+				})
+				.state('zyjj',{
+					url:'/zyjj',
+					template:'<p>卓越简介版块正在建设中.....</p>'
+				})
+				.state('mqtj',{
+					url:'/mqtj',
+					template:'<p>名企推荐版块正在建设中.....</p>'
+				});
+
+//			配置默认路由跳转地址（如果路由url不存在）
+			$urlRouterProvider.otherwise('/home');
+		}]);
+
+//		控制器
+		myApp.controller('homeController',['$scope',function($scope){
+
+			// 轮播插件
+			var mySwiper = new Swiper('.swiper-container',{
+				loop: true,
+				autoplay: 3000,
+				pagination: '.swiper-pagination',
+				paginationClickable: false,
+				autoplayDisableOnInteraction: false
+			});
+
+		}]);
+	</script>
+</body>
+</html>
